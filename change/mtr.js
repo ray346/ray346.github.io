@@ -85,25 +85,45 @@ async function getKMB58xInfo(){
     } else { document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
     document.getElementById('message3').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
-var seconds = 9;
+/*async function getHKO(){
+    const d = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
+    const json = await d.json()
+    box = "";
+    try {
+        const wf=json.WFIRE.name
+        .then(box=box+wf);
+    } catch(err){
+
+    }
+    try {
+    const w8=json.WTCSGNL.type
+    .then(box=box+w8)
+    //.then(document.getElementById('wa').innerHTML=w8);
+    } catch(err){
+}
+document.getElementById('wa').innerHTML=box;
+}*/
+/*var seconds = 9;
 setInterval(function() {
 document.getElementById('t').innerHTML = "每 "+seconds--+" 秒更新";
 if(seconds <0){
     seconds = 9;
 }
-}, 1000);
+}, 1000);*/
 
-getInfo();
-getKMBinfo();
+//getInfo();
+//getKMBinfo();
+//getHKO();
 
 setInterval(function(){
     var d = new Date(); // for now
     d.getHours();
     d.getMinutes();
     getKMBinfo();
+    //getHKO();
     getKMB58xInfo();
     document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes();
-}, 10000);
+}, 7000);
 setInterval(function(){
     getInfo();
-}, 20000);
+}, 14000);
