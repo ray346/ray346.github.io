@@ -1,4 +1,7 @@
 async function getInfo(){
+    var d = new Date(); // for now
+    d.getHours();
+    d.getMinutes();
     const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/lrt/getSchedule?station_id=150')
     const json= await res.json()
     const infoup1=json.platform_list[0].route_list[0]
@@ -6,29 +9,34 @@ async function getInfo(){
     const infoup2=json.platform_list[1].route_list[0]
     const infoup22=json.platform_list[1].route_list[1]
 
-    document.getElementById('message').innerHTML=infoup1.route_no+ " 往 " +infoup1.dest_ch+" 的 "+infoup1.train_length+ "卡列車 <br>時間： " +infoup1.time_ch
-    document.getElementById('message1').innerHTML=infoup12.route_no+ " 往 " +infoup12.dest_ch+" 的 "+infoup12.train_length+ "卡列車 <br>時間： " +infoup12.time_ch
-    document.getElementById('message2').innerHTML=infoup2.route_no+ " 往 " +infoup2.dest_ch+" 的 "+infoup2.train_length+ "卡列車 <br>時間： " +infoup2.time_ch
-    document.getElementById('message3').innerHTML=infoup22.route_no+ " 往 " +infoup22.dest_ch+" 的 "+infoup22.train_length+ "卡列車 <br>時間： " +infoup22.time_ch
+    document.getElementById('bg1').innerHTML="良景站 "+d.getHours()+":"+d.getMinutes();
+    document.getElementById('message').innerHTML="<b>"+infoup1.route_no+ "</b> 往 <b>" +infoup1.dest_ch+"</b> 的 <b>"+infoup1.train_length+ "</b>卡列車 <br>時間： " +infoup1.time_ch
+    document.getElementById('message1').innerHTML="<b>"+infoup12.route_no+ "</b> 往 <b>" +infoup12.dest_ch+"</b> 的 <b>"+infoup12.train_length+ "</b>卡列車 <br>時間： " +infoup12.time_ch
+    document.getElementById('message2').innerHTML="<b>"+infoup2.route_no+ "</b> 往 <b>" +infoup2.dest_ch+"</b> 的 <b>"+infoup2.train_length+ "</b>卡列車 <br>時間： " +infoup2.time_ch
+    document.getElementById('message3').innerHTML="<b>"+infoup22.route_no+ "</b> 往 <b>" +infoup22.dest_ch+"</b> 的 <b>"+infoup22.train_length+ "</b>卡列車 <br>時間： " +infoup22.time_ch
     if(infoup1.time_ch == "即將抵達"){
-    document.getElementById('abc').innerHTML=infoup1.route_no+ " 往 " +infoup1.dest_ch+" 的 "+infoup1.train_length+ "卡列車即將抵達1號月台"
+        document.getElementById('abc').style.display = 'block';
+    document.getElementById('abc').innerHTML="<b>"+infoup1.route_no+ "</b> 往 <b>" +infoup1.dest_ch+"</b> 的 <b>"+infoup1.train_length+ "</b>卡列車即將抵達<b>1號月台</b>"
 } else {
-    document.getElementById('abc').innerHTML=""
+    document.getElementById('abc').style.display = 'none';
 }
-if(infoup12.time_ch == "即將抵達"){
-    document.getElementById('abc').innerHTML=infoup12.route_no+ " 往 " +infoup12.dest_ch+" 的 "+infoup12.train_length+ "卡列車即將抵達1號月台"
+    if(infoup12.time_ch == "即將抵達"){
+        document.getElementById('abc2').style.display = 'block';
+    document.getElementById('abc2').innerHTML="<b>"+infoup12.route_no+ "</b> 往 <b>" +infoup12.dest_ch+"</b> 的 <b>"+infoup12.train_length+ "</b>卡列車即將抵達<b>1號月台</b>"
 } else {
-    document.getElementById('abc').innerHTML=""
+    document.getElementById('abc2').style.display = 'none';
 }
 if(infoup2.time_ch == "即將抵達"){
-    document.getElementById('abc').innerHTML=infoup2.route_no+ " 往 " +infoup2.dest_ch+" 的 "+infoup2.train_length+ "卡列車即將抵達2號月台"
+    document.getElementById('abc1').style.display = 'block';
+    document.getElementById('abc1').innerHTML="<b>"+infoup2.route_no+ "</b> 往 <b>" +infoup2.dest_ch+"</b> 的 <b>"+infoup2.train_length+ "</b>卡列車即將抵達<b>2號月台</b>"
 } else {
-    document.getElementById('abc').innerHTML=""
+    document.getElementById('abc1').style.display = 'none';
 }
 if(infoup22.time_ch == "即將抵達"){
-    document.getElementById('abc').innerHTML=infoup22.route_no+ " 往 " +infoup22.dest_ch+" 的 "+infoup22.train_length+ "卡列車即將抵達2號月台"
+    document.getElementById('abc3').style.display = 'block';
+    document.getElementById('abc3').innerHTML="<b>"+infoup22.route_no+ "</b> 往 <b>" +infoup22.dest_ch+"</b> 的 <b>"+infoup22.train_length+ "</b>卡列車即將抵達<b>2號月台</b>"
 } else {
-    document.getElementById('abc').innerHTML=""
+    document.getElementById('abc3').style.display = 'none';
 }
 }
 async function getKMBinfo(){
