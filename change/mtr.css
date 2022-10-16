@@ -36,3 +36,10 @@ body{
     background-image: url(IMG_9165.jpg);
     background-size: cover;
 }
+
+ul{
+list-style:none;
+height:40px;
+overflow:hidden;
+font-size: 30px;
+}

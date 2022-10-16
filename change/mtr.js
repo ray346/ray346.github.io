@@ -60,10 +60,10 @@ async function getKMBinfo(){
     } else { document.getElementById('kmb1').innerHTML=kmb58m.route+ " 往 " +kmb58m.dest_tc+"<br>時間：  "+TL+"分鐘 - "+kmb58m.rmk_tc;}
      */
     if(TL==0){
-        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： 正在離開";
+        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： 正在離開";
     } else {
-        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
-    document.getElementById('message1').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
+        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
+    document.getElementById('message1').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b>(經屯轉)<br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
 async function getKMB58xInfo(){
     const res = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/eta/692B63F1A1F42D8C/58X/1')
@@ -85,24 +85,52 @@ async function getKMB58xInfo(){
     } else { document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
     document.getElementById('message3').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
-/*async function getHKO(){
-    const d = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
-    const json = await d.json()
-    box = "";
-    try {
-        const wf=json.WFIRE.name
-        .then(box=box+wf);
-    } catch(err){
-
+async function getTMLInfo(){
+    const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/getSchedule.php?line=TML&sta=TUM');
+    const json = await res.json()
+    const TML = json.data["TML-TUM"].DOWN[0]
+    const ct = json.curr_time;
+    const ctt2=new Date(ct).getTime();
+    const etat1 =new Date(TML.time).getTime();
+    const TL2=Math.ceil((etat1-ctt2)/1000/60);
+    const STA_NAMETC ={
+        WKS:"烏溪沙"
     }
-    try {
-    const w8=json.WTCSGNL.type
-    .then(box=box+w8)
-    //.then(document.getElementById('wa').innerHTML=w8);
-    } catch(err){
+    const STA_NAME ={
+WKS: "Wu Kai Sha",
+MOS: "Ma On Shan",
+HEO: "Heng On",
+TSH: "Tai Shui Hang",
+SHM: "Shek Mun",
+CIO: "City One",
+STW: "Sha Tin Wai",
+CKT: "Che Kung Temple",
+TAW: "Tai Wai",
+HIK: "Hin Keng",
+DIH: "Diamond Hill",
+KAT: "Kai Tak",
+SUW: "Sung Wong Toi",
+TKW: "To Kwa Wan",
+HOM: "Ho Man Tin",
+HUH: "Hung Hom",
+ETS: "East Tsim Sha Tsui",
+AUS: "Austin",
+NAC: "Nam Cheong",
+MEF: "Mei Foo"
+    }
+    if(TL2==0){
+        document.getElementById('message4').innerHTML=`<b>屯門站</b> - <b>${STA_NAMETC[TML.dest]}</b>`+" <b>"+TML.plat+"</b>號月台 <br>正在離開..."
+    } else {
+        document.getElementById('message4').innerHTML=`<b>屯門站</b> - <b>${STA_NAMETC[TML.dest]}</b>`+" <b>"+TML.plat+"</b>號月台 <br>時間： <b>"+TL2+"</b> 分鐘"
+    }
 }
-document.getElementById('wa').innerHTML=box;
-}*/
+async function getHKO(){
+    const d = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc')
+    const json = await d.json()
+    const tt= json.forecastDesc
+    
+document.getElementById('wtr').innerHTML=tt;
+}
 /*var seconds = 9;
 setInterval(function() {
 document.getElementById('t').innerHTML = "每 "+seconds--+" 秒更新";
@@ -110,18 +138,26 @@ if(seconds <0){
     seconds = 9;
 }
 }, 1000);*/
+$(document).ready(function(){
+    setInterval(function(){
+      $('#news li:first-child').slideUp(function(){      $(this).appendTo($('#news')).slideDown()
+      })       
+    },4000)
+  })
 
-//getInfo();
+getInfo();
+getTMLInfo();
 //getKMBinfo();
-//getHKO();
+getHKO();
 
 setInterval(function(){
     var d = new Date(); // for now
     d.getHours();
     d.getMinutes();
     getKMBinfo();
-    //getHKO();
+    getHKO();
     getKMB58xInfo();
+    getTMLInfo();
     document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes();
 }, 7000);
 setInterval(function(){
