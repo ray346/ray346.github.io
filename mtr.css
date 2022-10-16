@@ -1,0 +1,28 @@
+#bg1{
+    color: white;
+    background-color: navy;
+    font-size: 25px;
+    padding: 5px;
+}
+/*div{
+    border: solid black;
+}*/
+
+.white-box{
+    background-color: white;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+.bule-bg{
+    background-color: lightblue;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+.abc{
+    background-color: orange;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
