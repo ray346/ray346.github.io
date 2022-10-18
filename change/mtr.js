@@ -1,8 +1,29 @@
+NAME_OF_HKO = {
+    WRAINB:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/rainb.gif align=bottom width=\"40px\" height=\"40px\">",
+    WRAINR:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/rainr.gif align=bottom width=\"40px\" height=\"40px\">",
+    WRAINA:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/raina.gif align=bottom width=\"40px\" height=\"40px\">",
+    八號西南烈風或暴風信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc8sw.gif align=bottom width=\"40px\" height=\"40px\">",
+    八號東南烈風或暴風信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc8se.gif align=bottom width=\"40px\" height=\"40px\">",
+    八號西北烈風或暴風信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc8nw.gif align=bottom width=\"40px\" height=\"40px\">",
+    八號東北烈風或暴風信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc8ne.gif align=bottom width=\"40px\" height=\"40px\">",
+    三號強風信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc3.gif align=bottom width=\"40px\" height=\"40px\">",
+    一號戒備信號:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/tc1.gif align=bottom width=\"40px\" height=\"40px\">",
+    強烈季候風信號:"<img src=https://www.hko.gov.hk/tc/wservice/warning/images/smsimg.png align=bottom width=\"40px\" height=\"40px\">",
+    寒冷天氣警告:"<img src=https://www.hko.gov.hk/tc/wservice/warning/images/warncold.gif align=bottom width=\"40px\" height=\"40px\">",
+    雷暴警告:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/ts.gif align=bottom width=\"40px\" height=\"40px\">",
+    取消所有熱帶氣旋警告信號:"",
+    NA:""
+}
+
 async function getInfo(){
     var d = new Date(); // for now
     d.getHours();
     d.getMinutes();
     box1="";
+    box2="";
+    box3="";
+    box4="";
+    box5="";
     const d1 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
     const json1 = await d1.json()
     const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/lrt/getSchedule?station_id=150')
@@ -13,26 +34,50 @@ async function getInfo(){
     const infoup22=json.platform_list[1].route_list[1]
     //hko
     try {
+        const t2= json1.WRAIN.code
+        if(typeof(t2)=="undefined"){
+            box5="NA";
+        } else box5=t2;
+    } catch(err){
+        box5="NA";
+    }
+    try {
+        const t2= json1.WTS.name
+        if(typeof(t2)=="undefined"){
+            box4="NA";
+        } else box4=t2;
+    } catch(err){
+        box4="NA";
+    }
+    try {
+        const t2= json1.WCOLD.name
+        if(typeof(t2)=="undefined"){
+            box3="NA";
+        } else box3=t2;
+    } catch(err){
+        box3="NA";
+    }
+    try {
         const t3= json1.WTCSGNL.type
         if(typeof(t3)=="undefined"){
-            box1+="";
-        } else box1+=t3;
+            box1="NA";
+        } else box1=t3;
     } catch(err){
-        box1+="";
+        box1="NA";
     }
-    if(box1==""){
-        box1="";
+    try {
+        const t4= json1.WMSGNL.name
+        if(typeof(t4)=="undefined"){
+            box2="NA";
+        } else box2=t4;
+    } catch(err){
+        box2="NA";
     }
-        if(box1=="三號強風信號"){
-            box1="<img src=No._03_Strong_Wind_Signal.png width=\"30px\" height=\"30px\">";
-        }
-        if(box1=="一號戒備信號"){
-            box1="<img src=No._01_Standby_Signal.png width=\"30px\" height=\"30px\">";
-        }
+    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
         if(d.getMinutes()<10){
-            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+box1;
+            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+allbox;
         } else {
-            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+box1;
+            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+allbox;
         }
     document.getElementById('message').innerHTML="<b>"+infoup1.route_no+ "</b> 往 <b>" +infoup1.dest_ch+"</b> 的 <b>"+infoup1.train_length+ "</b>卡列車 <br>時間： " +infoup1.time_ch
     document.getElementById('message1').innerHTML="<b>"+infoup12.route_no+ "</b> 往 <b>" +infoup12.dest_ch+"</b> 的 <b>"+infoup12.train_length+ "</b>卡列車 <br>時間： " +infoup12.time_ch
@@ -82,35 +127,63 @@ async function getKMBinfo(){
     const etat2=new Date(kmb58m2.eta).getTime();
     const TL2=Math.ceil((etat2-ctt2)/1000/60);
     //hko
-    box12="";
+    box1="";
+    box2="";
+    box3="";
+    box4="";
+    box5="";
     const d1 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
     const json1 = await d1.json()
     try {
+        const t2= json1.WRAIN.code
+        if(typeof(t2)=="undefined"){
+            box5="NA";
+        } else box5=t2;
+    } catch(err){
+        box5="NA";
+    }
+    try {
+        const t2= json1.WTS.name
+        if(typeof(t2)=="undefined"){
+            box4="NA";
+        } else box4=t2;
+    } catch(err){
+        box4="NA";
+    }
+    try {
+        const t2= json1.WCOLD.name
+        if(typeof(t2)=="undefined"){
+            box3="NA";
+        } else box3=t2;
+    } catch(err){
+        box3="NA";
+    }
+    try {
         const t3= json1.WTCSGNL.type
         if(typeof(t3)=="undefined"){
-            box12+="";
-        } else box12+=t3;
+            box1="NA";
+        } else box1=t3;
     } catch(err){
-        box12+="";
+        box1="NA";
     }
-    if(box12==""){
-        box12="";
+    try {
+        const t4= json1.WMSGNL.name
+        if(typeof(t4)=="undefined"){
+            box2="NA";
+        } else box2=t4;
+    } catch(err){
+        box2="NA";
     }
-        if(box12=="三號強風信號"){
-            box12="<img src=No._03_Strong_Wind_Signal.png width=\"30px\" height=\"30px\">";
-        }
-        if(box12=="一號戒備信號"){
-            box12="<img src=No._01_Standby_Signal.png width=\"30px\" height=\"30px\">";
-        }
+    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
     /*
         if(TL==0){
         document.getElementById('kmb1').innerHTML=kmb58m.route+ " 往 " +kmb58m.dest_tc+"<br>時間：  正在離開";
     } else { document.getElementById('kmb1').innerHTML=kmb58m.route+ " 往 " +kmb58m.dest_tc+"<br>時間：  "+TL+"分鐘 - "+kmb58m.rmk_tc;}
      */
     if(d.getMinutes()<10){
-    document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+box12;
+    document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+allbox;
     } else {
-        document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+box12;
+        document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+allbox;
     }
     if(TL==0){
         document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： 正在離開";
@@ -206,12 +279,12 @@ async function getHKO(){
     } catch(err){
         box+="";
     }
-    if(box==""){
+    if(box=="" || box=="取消所有熱帶氣旋警告信號"){
         box="現時無任何熱帶氣旋或天氣警告";
     }
     box+="現正生效";
-    
-document.getElementById('wtr').innerHTML=box;
+
+    document.getElementById("wtr").innerHTML=box;
 }
 /*var seconds = 9;
 setInterval(function() {
