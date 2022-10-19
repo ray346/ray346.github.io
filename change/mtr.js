@@ -1,4 +1,6 @@
 NAME_OF_HKO = {
+    WFIREY:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/firey.gif align=bottom width=\"40px\" height=\"40px\">",
+    WFIRER:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/firer.gif align=bottom width=\"40px\" height=\"40px\">",
     WRAINB:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/rainb.gif align=bottom width=\"40px\" height=\"40px\">",
     WRAINR:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/rainr.gif align=bottom width=\"40px\" height=\"40px\">",
     WRAINA:"<img src=https://www.hko.gov.hk/tc/textonly/img/warn/images/raina.gif align=bottom width=\"40px\" height=\"40px\">",
@@ -19,11 +21,12 @@ async function getInfo(){
     var d = new Date(); // for now
     d.getHours();
     d.getMinutes();
-    box1="";
-    box2="";
-    box3="";
-    box4="";
-    box5="";
+    box1="NA";
+    box2="NA";
+    box3="NA";
+    box4="NA";
+    box5="NA";
+    box6="";
     const d1 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
     const json1 = await d1.json()
     const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/lrt/getSchedule?station_id=150')
@@ -33,6 +36,14 @@ async function getInfo(){
     const infoup2=json.platform_list[1].route_list[0]
     const infoup22=json.platform_list[1].route_list[1]
     //hko
+    try {
+        const t2= json1.WFIRE.code
+        if(typeof(t2)=="undefined"){
+            box6="NA";
+        } else box6=t2;
+    } catch(err){
+        box6="NA";
+    }
     try {
         const t2= json1.WRAIN.code
         if(typeof(t2)=="undefined"){
@@ -73,7 +84,7 @@ async function getInfo(){
     } catch(err){
         box2="NA";
     }
-    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
+    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
         if(d.getMinutes()<10){
             document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+allbox;
         } else {
@@ -108,32 +119,33 @@ if(infoup22.time_ch == "即將抵達"){
     document.getElementById('abc3').style.display = 'none';
 }
 }
-async function getKMBinfo(){
+async function getENGInfo(){
     var d = new Date(); // for now
     d.getHours();
     d.getMinutes();
-    const res = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/eta/4CF25CB2C36E36F0/58M/1')
-    const json = await res.json()
-    //1
-    const kmb58m = json.data[0]
-    const ct= kmb58m.data_timestamp;
-    const ctt=new Date(ct).getTime();
-    const etat=new Date(kmb58m.eta).getTime();
-    const TL=Math.ceil((etat-ctt)/1000/60);
-    //2
-    const kmb58m2 = json.data[1]
-    const ct2= kmb58m2.data_timestamp;
-    const ctt2=new Date(ct2).getTime();
-    const etat2=new Date(kmb58m2.eta).getTime();
-    const TL2=Math.ceil((etat2-ctt2)/1000/60);
-    //hko
-    box1="";
-    box2="";
-    box3="";
-    box4="";
-    box5="";
+    box1="NA";
+    box2="NA";
+    box3="NA";
+    box4="NA";
+    box5="NA";
+    box6="";
     const d1 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
     const json1 = await d1.json()
+    const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/lrt/getSchedule?station_id=150')
+    const json= await res.json()
+    const infoup1=json.platform_list[0].route_list[0]
+    const infoup12=json.platform_list[0].route_list[1]
+    const infoup2=json.platform_list[1].route_list[0]
+    const infoup22=json.platform_list[1].route_list[1]
+    //hko
+    try {
+        const t2= json1.WFIRE.code
+        if(typeof(t2)=="undefined"){
+            box6="NA";
+        } else box6=t2;
+    } catch(err){
+        box6="NA";
+    }
     try {
         const t2= json1.WRAIN.code
         if(typeof(t2)=="undefined"){
@@ -174,7 +186,117 @@ async function getKMBinfo(){
     } catch(err){
         box2="NA";
     }
-    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
+    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
+        if(d.getMinutes()<10){
+            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":0"+d.getMinutes()+allbox;
+        } else {
+            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":"+d.getMinutes()+allbox;
+        }
+        document.getElementById('message').innerHTML="A <b>"+infoup1.train_length+"</b>-car route <b>"+infoup1.route_no+ "</b> train to <b>" +infoup1.dest_en+"</b> <br>Time： " +infoup1.time_en
+        document.getElementById('message1').innerHTML="A <b>"+infoup12.train_length+"</b>-car route <b>"+infoup12.route_no+ "</b> train to <b>" +infoup12.dest_en+"</b> <br>Time： " +infoup12.time_en
+        document.getElementById('message2').innerHTML="A <b>"+infoup2.train_length+"</b>-car route <b>"+infoup2.route_no+ "</b> train to <b>" +infoup2.dest_en+"</b> <br>Time： " +infoup2.time_en
+        document.getElementById('message3').innerHTML="A <b>"+infoup22.train_length+"</b>-car route <b>"+infoup22.route_no+ "</b> train to <b>" +infoup22.dest_en+"</b> <br>Time： " +infoup22.time_en
+    if(infoup1.time_en == "Arriving"){
+        document.getElementById('abc').style.display = 'block';
+    document.getElementById('abc').innerHTML="A <b>"+infoup1.train_length+"</b>-car route <b>"+infoup1.route_no+ "</b> train to <b>" +infoup1.dest_en+"</b> is arriving at<b> platform 1</b>"
+} else {
+    document.getElementById('abc').style.display = 'none';
+}
+    if(infoup12.time_en == "Arriving"){
+        document.getElementById('abc2').style.display = 'block';
+    document.getElementById('abc2').innerHTML="A <b>"+infoup12.train_length+"</b>-car route <b>"+infoup12.route_no+ "</b> train to <b>" +infoup12.dest_en+"</b> is arriving at<b> platform 1</b>"
+} else {
+    document.getElementById('abc2').style.display = 'none';
+}
+if(infoup2.time_en == "Arriving"){
+    document.getElementById('abc1').style.display = 'block';
+    document.getElementById('abc1').innerHTML="A <b>"+infoup2.train_length+"</b>-car route <b>"+infoup2.route_no+ "</b> train to <b>" +infoup2.dest_en+"</b> is arriving at<b> platform 2</b>"
+} else {
+    document.getElementById('abc1').style.display = 'none';
+}
+if(infoup22.time_en == "Arriving"){
+    document.getElementById('abc3').style.display = 'block';
+    document.getElementById('abc3').innerHTML="A <b>"+infoup22.train_length+"</b>-car route <b>"+infoup22.route_no+ "</b> train to <b>" +infoup22.dest_en+"</b> is arriving at<b> platform 2</b>"
+} else {
+    document.getElementById('abc3').style.display = 'none';
+}
+}
+async function getKMBinfo(){
+    var d = new Date(); // for now
+    d.getHours();
+    d.getMinutes();
+    const res = await fetch('https://data.etabus.gov.hk/v1/transport/kmb/eta/4CF25CB2C36E36F0/58M/1')
+    const json = await res.json()
+    //1
+    const kmb58m = json.data[0]
+    const ct= kmb58m.data_timestamp;
+    const ctt=new Date(ct).getTime();
+    const etat=new Date(kmb58m.eta).getTime();
+    const TL=Math.ceil((etat-ctt)/1000/60);
+    //2
+    const kmb58m2 = json.data[1]
+    const ct2= kmb58m2.data_timestamp;
+    const ctt2=new Date(ct2).getTime();
+    const etat2=new Date(kmb58m2.eta).getTime();
+    const TL2=Math.ceil((etat2-ctt2)/1000/60);
+    //hko
+    box1="";
+    box2="";
+    box3="";
+    box4="";
+    box5="";
+    box6="";
+    const d1 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warnsum&lang=tc')
+    const json1 = await d1.json()
+    try {
+        const t2= json1.WFIRE.code
+        if(typeof(t2)=="undefined"){
+            box6="NA";
+        } else box6=t2;
+    } catch(err){
+        box6="NA";
+    }
+    try {
+        const t2= json1.WRAIN.code
+        if(typeof(t2)=="undefined"){
+            box5="NA";
+        } else box5=t2;
+    } catch(err){
+        box5="NA";
+    }
+    try {
+        const t2= json1.WTS.name
+        if(typeof(t2)=="undefined"){
+            box4="NA";
+        } else box4=t2;
+    } catch(err){
+        box4="NA";
+    }
+    try {
+        const t2= json1.WCOLD.name
+        if(typeof(t2)=="undefined"){
+            box3="NA";
+        } else box3=t2;
+    } catch(err){
+        box3="NA";
+    }
+    try {
+        const t3= json1.WTCSGNL.type
+        if(typeof(t3)=="undefined"){
+            box1="NA";
+        } else box1=t3;
+    } catch(err){
+        box1="NA";
+    }
+    try {
+        const t4= json1.WMSGNL.name
+        if(typeof(t4)=="undefined"){
+            box2="NA";
+        } else box2=t4;
+    } catch(err){
+        box2="NA";
+    }
+    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
     /*
         if(TL==0){
         document.getElementById('kmb1').innerHTML=kmb58m.route+ " 往 " +kmb58m.dest_tc+"<br>時間：  正在離開";
@@ -305,13 +427,20 @@ getTMLInfo();
 //getKMBinfo();
 getHKO();
 //getWeather();
+var mtrt="";
 
 setInterval(function(){
-    getKMBinfo();
-    getHKO();
-    getKMB58xInfo();
-    getTMLInfo();
-}, 7000);
-setInterval(function(){
-    getInfo();
-}, 14000);
+
+        getInfo();
+        getTMLInfo();
+        setTimeout(function() {
+        getENGInfo()
+        getTMLInfo()
+        getTMLInfo()
+    }, 4000)
+    setTimeout(function() {
+        getKMBinfo();
+        getKMB58xInfo();
+        getTMLInfo();
+    }, 7000)
+},11000)
