@@ -17,6 +17,13 @@ NAME_OF_HKO = {
     NA:""
 }
 
+async function getv(){
+    const d1 = await fetch('https://api.countapi.xyz/hit/ray346.github.io/visits')
+    const json1 = await d1.json()
+    const v=json1.value
+    document.getElementById('count').innerHTML="共有 "+v+" 到訪過！感謝支持！";
+}
+
 async function getInfo(){
     var d = new Date(); // for now
     d.getHours();
@@ -422,6 +429,7 @@ $(document).ready(function(){
     },4000)
   })
 
+getv();
 getInfo();
 getTMLInfo();
 //getKMBinfo();
