@@ -317,9 +317,9 @@ async function getKMBinfo(){
         document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+temp+allbox;
     }
     if(TL==0){
-        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： 正在離開";
+        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： 正在離開 | <b>"+TL2+"</b> 分鐘";
     } else {
-        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
+        document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc+" | <b>"+TL2+"</b> 分鐘";}
     //document.getElementById('message1').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b>(經屯轉)<br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
 async function getKMB58xInfo(){
@@ -345,10 +345,12 @@ async function getKMB58xInfo(){
 async function getGMB(){
     const res = await fetch('https://data.etagmb.gov.hk/eta/route-stop/2003999/20001400')
     const json = await res.json()
-    const lt = "上水站"
+    const lt = "上水站(田景站)"
     const rt = "44A"
     const gmb1 = json.data[0].eta[0].diff
-    document.getElementById('message1').innerHTML="<b>"+rt+"</b> 往 <b>"+lt+"</b><br>時間： <b>"+gmb1+"</b>分鐘 "
+    const gmb2 = json.data[0].eta[1].diff
+    const gmb3 = json.data[0].eta[2].diff
+    document.getElementById('message1').innerHTML="<b>"+rt+"</b> 往 <b>"+lt+"</b><br>時間： <b>"+gmb1+"</b>分鐘 | <b>"+gmb2+"</b>分鐘 | <b>"+gmb3+"</b>分鐘"
 
 }
 async function getTMLInfo(){
