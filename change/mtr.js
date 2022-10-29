@@ -17,6 +17,8 @@ NAME_OF_HKO = {
     NA:""
 }
 
+var temp = "";
+
 async function getv(){
     const d1 = await fetch('https://api.countapi.xyz/hit/ray346.github.io/visits')
     const json1 = await d1.json()
@@ -93,9 +95,9 @@ async function getInfo(){
     }
     const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
         if(d.getMinutes()<10){
-            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+allbox;
+            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+temp+allbox;
         } else {
-            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+allbox;
+            document.getElementById('bg1').innerHTML="輕鐵班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+temp+allbox;
         }
     document.getElementById('message').innerHTML="<b>"+infoup1.route_no+ "</b> 往 <b>" +infoup1.dest_ch+"</b> 的 <b>"+infoup1.train_length+ "</b>卡列車 <br>時間： " +infoup1.time_ch
     document.getElementById('message1').innerHTML="<b>"+infoup12.route_no+ "</b> 往 <b>" +infoup12.dest_ch+"</b> 的 <b>"+infoup12.train_length+ "</b>卡列車 <br>時間： " +infoup12.time_ch
@@ -195,9 +197,9 @@ async function getENGInfo(){
     }
     const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
         if(d.getMinutes()<10){
-            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":0"+d.getMinutes()+allbox;
+            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":0"+d.getMinutes()+" "+temp+allbox;
         } else {
-            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":"+d.getMinutes()+allbox;
+            document.getElementById('bg1').innerHTML="Light Rail - Leung King Station "+d.getHours()+":"+d.getMinutes()+" "+temp+allbox;
         }
         document.getElementById('message').innerHTML="A <b>"+infoup1.train_length+"</b>-car route <b>"+infoup1.route_no+ "</b> train to <b>" +infoup1.dest_en+"</b> <br>Time： " +infoup1.time_en
         document.getElementById('message1').innerHTML="A <b>"+infoup12.train_length+"</b>-car route <b>"+infoup12.route_no+ "</b> train to <b>" +infoup12.dest_en+"</b> <br>Time： " +infoup12.time_en
@@ -310,9 +312,9 @@ async function getKMBinfo(){
     } else { document.getElementById('kmb1').innerHTML=kmb58m.route+ " 往 " +kmb58m.dest_tc+"<br>時間：  "+TL+"分鐘 - "+kmb58m.rmk_tc;}
      */
     if(d.getMinutes()<10){
-    document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+allbox;
+    document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":0"+d.getMinutes()+" "+temp+allbox;
     } else {
-        document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+allbox;
+        document.getElementById('bg1').innerHTML="巴士班次 - 良景站 "+d.getHours()+":"+d.getMinutes()+" "+temp+allbox;
     }
     if(TL==0){
         document.getElementById('message').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b>(經屯轉)<br>時間： 正在離開";
@@ -340,6 +342,15 @@ async function getKMB58xInfo(){
     } else { document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
     document.getElementById('message3').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
+/*async function getGMB(){
+    const res = await fetch('https://data.etagmb.gov.hk/eta/route-stop/2003999/20001400')
+    const json = await res.json()
+    const lt = "上水站"
+    const rt = "44A"
+    const gmb1 = json.data[0].eta[0].diff
+    document.getElementById('message1').innerHTML="<b>"+rt+"</b> 往 <b>"+lt+"</b>(經屯轉)<br>時間： <b>"+gmb1+"</b>分鐘 "
+
+}*/
 async function getTMLInfo(){
     const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/getSchedule.php?line=TML&sta=TUM');
     const json = await res.json()
@@ -384,6 +395,12 @@ MEF: "Mei Foo"
     } else {
         document.getElementById('message4').innerHTML=`<b>屯門站</b> - <b>${STA_NAMETC[TML.dest]}</b>`+" <b>"+TML.plat+"</b>號月台 <br>時間： <b>"+TL2+"</b> 分鐘 | <b>"+TL3+"</b> 分鐘 | <b>"+TL4+"</b> 分鐘"
     }
+}
+async function WeatherAPI(){
+    const d1 = await fetch('https://api.openweathermap.org/data/2.5/weather?id=1819730&units=metric&appid=9fe31bd5341d9709a82650a83a441bd2')
+    const json = await d1.json()
+    const tmp = json.main.feels_like
+    temp = tmp.toFixed(1)+"℃"
 }
 async function getHKO(){
     box="";
@@ -434,8 +451,13 @@ getInfo();
 getTMLInfo();
 //getKMBinfo();
 getHKO();
+WeatherAPI();
+//getGMB();
 //getWeather();
 var mtrt="";
+setInterval(function(){
+    WeatherAPI();
+},30000)
 
 setInterval(function(){
 

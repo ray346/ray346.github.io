@@ -8,6 +8,14 @@
     border: solid black;
 }*/
 
+@font-face {
+    font-family: MTRSUNG;
+    src: url(MTR\ Sung.TTF);
+  }
+  div {
+    font-family: MTRSUNG;
+  }  
+
 .white-box{
     background-color: white;
     color: black;
