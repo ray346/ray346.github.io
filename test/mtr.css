@@ -1,0 +1,53 @@
+#bg1{
+    color: white;
+    background-color: navy;
+    font-size: 30px;
+    padding: 5px;
+}
+/*div{
+    border: solid black;
+}*/
+
+@font-face {
+    font-family: MTRSUNG;
+    src: url(MTR\ Sung.TTF);
+  }
+  div {
+    font-family: MTRSUNG;
+  }  
+
+.white-box{
+    background-color: white;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+.bule-bg{
+    background-color: lightblue;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+.abc{
+    background-color: orange;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+.ac{
+    background-color: gold;
+    color: black;
+    font-size: 30px;
+    padding: 8px;
+}
+body{
+    background-image: url(IMG_9165.jpg);
+    background-size: cover;
+}
+
+ul{
+list-style:none;
+height:40px;
+overflow:hidden;
+font-size: 30px;
+}
