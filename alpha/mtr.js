@@ -18,6 +18,7 @@ NAME_OF_HKO = {
 }
 
 var temp = "";
+var icon = "";
 
 async function getv(){
     const d1 = await fetch('https://api.countapi.xyz/hit/ray346.github.io/visits')
@@ -93,7 +94,7 @@ async function getInfo(){
     } catch(err){
         box2="NA";
     }
-    const allbox=" "+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
+    const allbox=" "+icon+NAME_OF_HKO[box1]+NAME_OF_HKO[box5]+NAME_OF_HKO[box6]+NAME_OF_HKO[box2]+NAME_OF_HKO[box3]+NAME_OF_HKO[box4];
         if(d.getMinutes()<10){
             document.getElementById('bg1').innerHTML=d.getHours()+":0"+d.getMinutes()+" "+temp+allbox;
             document.getElementById('STA').innerHTML="輕鐵班次 - 良景站 ";
@@ -339,7 +340,7 @@ async function getKMB58xInfo(){
     const ctt2=new Date(ct2).getTime();
     const etat2=new Date(kmb58m2.eta).getTime();
     const TL2=Math.ceil((etat2-ctt2)/1000/60);
-    if(TL==0 || TL<0){
+    if(TL==0){
         document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： 正在離開";
     } else { document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
     document.getElementById('message3').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
@@ -401,10 +402,14 @@ MEF: "Mei Foo"
     }
 }
 async function WeatherAPI(){
+    const d2 = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc')
+    const json2 = await d2.json()
     const d1 = await fetch('https://api.openweathermap.org/data/2.5/weather?id=1819730&units=metric&appid=9fe31bd5341d9709a82650a83a441bd2')
     const json = await d1.json()
     const tmp = json.main.feels_like
+    const ic = json2.icon[0]
     temp = tmp.toFixed(1)+"℃"
+    icon = `<img src=https://www.hko.gov.hk/images/HKOWxIconOutline/pic${ic}.png align=bottom width=\"40px\" height=\"40px\">`
 }
 async function getHKO(){
     box="";
