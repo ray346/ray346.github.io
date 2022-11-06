@@ -345,7 +345,7 @@ async function getKMB58xInfo(){
     } else { document.getElementById('message2').innerHTML="<b>"+kmb58m.route+ "</b> 往 <b>" +kmb58m.dest_tc+"</b><br>時間： <b>"+TL+"</b>分鐘 "+kmb58m.rmk_tc;}
     document.getElementById('message3').innerHTML="<b>"+kmb58m2.route+ "</b> 往 <b>" +kmb58m2.dest_tc+"</b><br>時間： <b>"+TL2+"</b>分鐘 "+kmb58m2.rmk_tc
 }
-/*async function getGMB(){
+async function getGMB(){
     const res = await fetch('https://data.etagmb.gov.hk/eta/route-stop/2003999/20001400')
     const json = await res.json()
     const lt = "上水站(田景站)"
@@ -354,8 +354,7 @@ async function getKMB58xInfo(){
     const gmb2 = json.data[0].eta[1].diff
     const gmb3 = json.data[0].eta[2].diff
     document.getElementById('message1').innerHTML="<b>"+rt+"</b> 往 <b>"+lt+"</b><br>時間： <b>"+gmb1+"</b>分鐘 | <b>"+gmb2+"</b>分鐘 | <b>"+gmb3+"</b>分鐘"
-
-}*/
+}
 async function getTMLInfo(){
     const res = await fetch('https://rt.data.gov.hk/v1/transport/mtr/getSchedule.php?line=TML&sta=TUM');
     const json = await res.json()
@@ -468,7 +467,25 @@ setInterval(function(){
     WeatherAPI();
 },30000)
 
+function Timer(){
+    getInfo();
+    getTMLInfo();
+    setTimeout(function(){
+        getENGInfo();
+        getTMLInfo();
+    },5000)
+    setTimeout(function() {
+        getKMBinfo();
+        getKMB58xInfo();
+        getTMLInfo();
+    },10000)
+}
+
 setInterval(function(){
+    Timer();
+},15000)
+
+/*setInterval(function(){
 
         getInfo();
         getTMLInfo();
@@ -483,4 +500,4 @@ setInterval(function(){
         getKMB58xInfo();
         getTMLInfo();
     }, 7000)
-},11000)
+},11000)*/
